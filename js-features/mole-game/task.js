@@ -2,29 +2,38 @@
 let getHole = index => document.getElementById(`hole${index}`);
 let deadMole = document.getElementById('dead');
 let lostMole = document.getElementById('lost');
-let wings = parseInt(deadMole.textContent);
-let losts = parseInt(lostMole.textContent);
+let wings = 0;
+let losts = 0;
 
-function checkGame(deadMole, lostMole) {
-    console.log(deadMole, lostMole);
-    if (deadMole === 10) {
-        alert("Вы победили!");
-        location.reload();
-    } else if (lostMole === 5) {
-        alert("Вы проиграли!");
-        location.reload();
-    };
-};
+function checkGame(element) {
+	if (element.className.includes('hole_has-mole')) {
+		wings += 1;
+	} else {
+		losts += 1;
+	}
 
-for (let i = 1; i <= 9; i++) {
-    getHole(i).onclick = function () {
-        if (this.className.includes('hole_has-mole')) {
-            wings += 1;
-            deadMole.textContent = wings;
-        } else {
-            losts += 1;
-            lostMole.textContent = losts;
-        };
-        checkGame(wings, losts);
-    };
-};
+	if (wings === 2) {
+		alert("Вы победили!");
+		wings = 0;
+		losts = 0;
+	}
+
+	if (losts === 2) {
+		alert("Вы победили!");
+		wings = 0;
+		losts = 0;
+	}
+
+	deadMole.textContent = wings;
+	lostMole.textContent = losts;
+
+}
+
+let i = 0;
+
+for (i = 1; i <= 9; i++) {
+	let element = getHole(i);
+	element.onclick = () => {
+		checkGame(element)
+	};
+}
