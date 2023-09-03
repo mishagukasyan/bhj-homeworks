@@ -4,6 +4,10 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
+    this.timerElement = container.querySelector('.status_timer');
+
+    this.lengthWords;
+    this.idTimer;
 
     this.reset();
 
@@ -17,27 +21,37 @@ class Game {
   }
 
   registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода слова вызываем this.success()
-      При неправильном вводе символа - this.fail();
-      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
-     */
+  	document.addEventListener('keydown', (event) => {
+  		if (this.idTimer === undefined) this.startTimer();
+  		event.key == this.currentSymbol.textContent ? this.success() : this.fail();
+  	});
+  }
+
+  startTimer () {
+  	this.idTimer = setInterval(()=>{
+  		if (this.lengthWords < 0) {
+  			this.fail();
+  		} else {
+  			this.timerElement.textContent = this.lengthWords;
+  		}
+  		--this.lengthWords;
+  	}, 1000);
+  }
+
+  stopTimer () {
+  	clearInterval(this.idTimer);
+  	this.idTimer = undefined
   }
 
   success() {
-    if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
     this.currentSymbol.classList.add('symbol_correct');
     this.currentSymbol = this.currentSymbol.nextElementSibling;
-
     if (this.currentSymbol !== null) {
-      this.currentSymbol.classList.add('symbol_current');
       return;
     }
 
     if (++this.winsElement.textContent === 10) {
+    	this.stopTimer();
       alert('Победа!');
       this.reset();
     }
@@ -46,6 +60,7 @@ class Game {
 
   fail() {
     if (++this.lossElement.textContent === 5) {
+      this.stopTimer();
       alert('Вы проиграли!');
       this.reset();
     }
@@ -78,6 +93,8 @@ class Game {
   }
 
   renderWord(word) {
+  	this.lengthWords = this.timerElement.textContent = word.length;
+
     const html = [...word]
       .map(
         (s, i) =>
@@ -91,4 +108,3 @@ class Game {
 }
 
 new Game(document.getElementById('game'))
-
