@@ -1,8 +1,15 @@
-window.addEventListener("scroll", event => {
-    const banner = document.querySelector(".reveal")
-    const bannerTopX = banner.getBoundingClientRect().top;
-    const bannerBottomX = banner.getBoundingClientRect().bottom;
+const banner = document.querySelectorAll('.reveal');
+
+document.addEventListener('scroll', function () {
     const viewportHeight = window.innerHeight;
-    const status = (bannerTopX < (viewportHeight / 1.5) & bannerBottomX >=  (viewportHeight / 4))
-    status ? banner.classList.add("reveal_active") : banner.classList.remove("reveal_active");
-  })
+
+    for (let element of banner) {        
+        const bannerTop = element.getBoundingClientRect().top;
+        
+        if (bannerTop < viewportHeight && bannerTop > 0) {
+            element.classList.add('reveal_active');
+        } else {
+            element.classList.remove('reveal_active');
+        }
+    }
+});
