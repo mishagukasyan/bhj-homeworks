@@ -1,12 +1,13 @@
-const countTime = function() {
+function countTime() {
 	const output = document.getElementById("timer");
-
-	if (output.textContent >= 1) {
+const timerID = setInterval(() => {
+	if (output.textContent > 0) {
 		output.textContent--;
-	} else if (output.textContent = '0') {
-			     clearTimeout(output);
+	} else { 
+			     clearInterval(timerID);
                  alert("Вы победили в конкурсе!");
 	}
+  }, 1000);
 }
 
-setInterval(countTime, 1000);	
+countTime();
