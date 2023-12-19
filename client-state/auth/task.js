@@ -20,7 +20,7 @@ document.getElementById('signin__btn').onclick = function(event) {
         const postRequest = new XMLHttpRequest();
         postRequest.open("POST", 'https://students.netoservices.ru/nestjs-backend/auth');
         postRequest.onreadystatechange = function() {
-            if (postRequest.status == 200 && postRequest.readyState == 4) {
+            if (postRequest.status == 201 && postRequest.readyState == 4) {
                 let response = JSON.parse(postRequest.response);
                 if (response['success'] == false) {
                     alert('Неверный логин или пароль!');
